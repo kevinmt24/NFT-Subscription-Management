@@ -1,0 +1,31 @@
+.articleContent { 
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(to bottom, black,black, white);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+    background-clip: none;
+       
+    
+}
+
+.subsection {
+    margin-left: 200px;
+}
+
+.subscribe {
+    font-size: huge;
+    text-align: center;
+    display: inline-block;
+}
+
+.articlecontainer{
+    
+    max-width: 700px;
+    margin-left: 350px;
+
+}
+
+.subbutton {
+    max-width: 300px;
+
+}

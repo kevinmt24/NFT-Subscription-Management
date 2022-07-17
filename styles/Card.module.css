@@ -1,0 +1,38 @@
+.artist {
+    margin-bottom: 10px;
+    word-break: break-all;
+    max-height: 16px;
+    font-size: 13px;
+    font-weight: 500;
+    padding-left: 3px;
+}
+.title {
+    letter-spacing: 0;
+    max-height: 56px;
+    line-height: 28px;
+    font-size: 22px;
+    font-weight: 700;
+    color: black;
+    margin-bottom: 10px;
+}
+.cardImage {
+    margin-top: 60px;
+}
+
+.dateformat {
+    color: rgba(117, 117, 117, 1);
+    font-size: 13px;
+    line-height: 20px;
+}
+
+.readtime {
+    
+    color: rgba(117, 117, 117, 1);
+    font-size: 13px;
+    line-height: 20px;
+    margin-left: -40px;
+}
+
+.stats {
+    margin-bottom: -10px;
+}
