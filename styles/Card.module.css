@@ -34,5 +34,14 @@
 }
 
 .stats {
+    margin-top: 10px ;
     margin-bottom: -10px;
+}
+
+.paradesc{
+
+  overflow: hidden;
+  max-height: 100px;
+  text-overflow: ellipsis;
+  
 }

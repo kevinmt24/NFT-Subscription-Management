@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import Authenticate from "../components/authenticate";
+import Layout from '../components/Layout';
 
 class Medium extends Component {
   render() {
-    return <Authenticate/>
+    return <Layout/>
   }
 }
 export default Medium;
