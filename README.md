@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Sample Hardhat Project
 
 This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
@@ -22,4 +22,3 @@ The smart contract was implemented using ERC 1155 token standard in Solidity. We
 2. Ability to mint an ERC-1155 token, limited to 10 tokens per day.
 3. Verify ownership to the given day’s access token.
 4. Grant access to a restricted page.
->>>>>>> 7ffe50514c2bde487deda6b7639a775e5fd09e99
