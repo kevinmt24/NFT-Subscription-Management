@@ -1,9 +1,17 @@
 import React, {useState, useEffect } from "react";
-import { Button, Menu, Image } from "semantic-ui-react";
+import { Button, Menu, Image, Popup } from "semantic-ui-react";
 import { Link } from "../routes";
 import styles from "../styles/Header.module.css";
 import "semantic-ui-css/semantic.min.css";
+import app from "../firebase.config";
 
+import {
+  doc,
+  setDoc,
+  getFirestore
+} from "firebase/firestore";
+
+const db = getFirestore(app);
 
 const Header = () => {
 
@@ -21,9 +29,12 @@ useEffect(() => {
   });
 });
 
-const connectWalletHandler = () => {
+const connectWalletHandler =  () => {
 
   setIsLoading(true);
+  setDoc(doc(db, "users", "0xcd3B766CCDd6AE721141F452C550Ca635964ce71"), {
+    exists : true
+  });
 
   if (!window.ethereum) {
     setErrorMessage("MetaMask not detected. Please try again from a MetaMask enabled browser.");
@@ -46,24 +57,24 @@ const connectWalletHandler = () => {
     <div className={styles.HeaderMenu}>
       <Menu secondary>
         <Link route = '/  '>
+          <a>
         <Image
           style={{ marginTop: "4px" }}
           src="https://links.papareact.com/yvf"
           size="small"
           layout="fill"
         />
+        </a>
         </Link>
         <Menu.Menu position="right">
           <Link route="/Story">
             <a className="item">Our Story</a>
           </Link>
-          <Link route="/">
-            <a className="item">Membership</a>
-          </Link>
           <Link route="/Writing">
-            <a className="item">Write</a>
+            <a className="item">Write an Article</a>
           </Link>
           <a className="item">
+            <Popup content={defaultAccount} trigger = {
             <Button
               onClick={connectWalletHandler}
               color="black"
@@ -73,6 +84,8 @@ const connectWalletHandler = () => {
               content={connectButtonText}
               loading = {isLoading}
             />
+            } />
+           
 
           </a>
         </Menu.Menu>

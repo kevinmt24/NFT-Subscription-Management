@@ -1,10 +1,11 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Container, Divider, Grid } from "semantic-ui-react";
 import Header from "./Header";
 import SideColumn from "./sideColumn";
 import Article from "./Card";
 
 const Layout = (props) => {
+
 
   return (
     <div>

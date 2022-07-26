@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from 'next/router';
+import moment from "moment";
 
 import {
   Container,
@@ -17,6 +18,7 @@ const Writing = () => {
 
   const [formStatus, setFormStatus] = useState(false);
   const [errorStatus, setErrorStatus] = useState(false);
+  const [errorMessage,setErrorMessage] = useState("");
   const [ethAddress, setEthAddress] = useState("");
   const router = useRouter();
   
@@ -31,6 +33,7 @@ const Writing = () => {
     email: "",
     title: "",
     desc: "",
+    date: moment().format("MMM Do YY")
   });
 
  
@@ -38,9 +41,15 @@ const Writing = () => {
   const db = getFirestore(app);
 
   const writeUserData = async () => {
+    if(ethAddress = "") {
+      setErrorMessage("Please connect to your Metamask account.");
+      setErrorStatus(true);
+      
+    }
     const docRef = await addDoc(collection(db, "articles"), {...formData,address: ethAddress})
     .catch((e) => {
       console.log(e.message);
+      setErrorMessage("Publish Failed");
       setErrorStatus(true);
     });
     console.log("Document written with ID: ", docRef.id);
@@ -108,7 +117,7 @@ const Writing = () => {
         <Message
           error
           header="Action Forbidden"
-          content="You can only sign up for an account once with a given e-mail address."
+          content={errorMessage}
         />
       </Form>
     </Container>

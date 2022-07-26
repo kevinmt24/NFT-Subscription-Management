@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { Grid, Image, Divider } from "semantic-ui-react";
 import styles from '../styles/Card.module.css'
-import { collection, getDocs, getFirestore, query } from "firebase/firestore";
+import { collection, getDocs, getFirestore, query, setDoc, doc } from "firebase/firestore";
 import app from "../firebase.config";
 import Link from "next/link";
 
@@ -10,7 +10,6 @@ const db = getFirestore(app);
 const Article = () => {
 
   const [articleData,setArticleData] = useState([]);
-  
   useEffect(() => {
     const q = query(collection(db,"articles")); 
     getDocs(collection(db,"articles"))
@@ -20,9 +19,10 @@ const Article = () => {
           return {...data.data(), id: data.id}
       }))
     });
+
   }, []);
   
-
+    
 
   return (
     
@@ -41,9 +41,7 @@ const Article = () => {
               </a>
               </Link>
               <div className={styles.stats}>
-              <span> <div>
-                  Jun 11
-                </div><span>Productivity</span></span>
+                {data.date}   Productivity
               </div>
               <Divider />
             </Grid.Column>
