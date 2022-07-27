@@ -7,7 +7,6 @@
 const hre = require("hardhat");
 
 async function main() {
-
   const Medium = await hre.ethers.getContractFactory("Medium");
   const medium = await Medium.deploy();
 

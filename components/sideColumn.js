@@ -18,23 +18,33 @@ const SideColumn = () => {
   const [errorStatus, setErrorStatus] = useState(false);
   const [successStatus, setSuccessStatus] = useState(false);
 
+//Fetching the amount of tokens the user already has.
+  useEffect(() => {
+    async function fetchTokens() {
+      await contract
+      .verifyUserHasToken("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266")
+      .then(async (tx) => {
+          const receipt = await tx.wait()
+//Number of tokens recieved using EVENT-EMITTER in Solidity
+          for (const event of receipt.events) {
+            console.log(`Event ${event.event} with args ${event.args}`);
+
+            setTokenAmount(event.args.toString());
+          }
+      });
+    }
+    fetchTokens().catch(console.error)
+  },[]);
+
+//Mint function to mint tokens where tokenInput = number of tokens required to mint.
   const mint = async () => {
+
     try {
         const result = await contract.mint(
-          "0xcd3B766CCDd6AE721141F452C550Ca635964ce71",
+          "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
           tokenInput
          );
-      await contract
-        .verifyUserHasToken("0xcd3B766CCDd6AE721141F452C550Ca635964ce71")
-        .then(async (tx) => {
-            const receipt = await tx.wait()
-
-            for (const event of receipt.events) {
-              console.log(`Event ${event.event} with args ${event.args}`);
-              setTokenAmount(event.args.toString());
-            }
-        });
-      
+    
       setSuccessStatus(true);
       setHeaderMessage("Mint Successful !");
       setTimeout(function () {
@@ -43,9 +53,9 @@ const SideColumn = () => {
       }, 5000);
     } catch (e) {
      
-    //console.log(e.reason.substring(77));
+    console.log(e.reason.substring(77));
       setErrorStatus(true);
-      //setHeaderMessage(e.reason.substring(77).toString());
+      setHeaderMessage(e.reason.substring(77).toString());
       setTimeout(function () {
         setHeaderMessage("");
         setErrorStatus(false);
@@ -54,6 +64,7 @@ const SideColumn = () => {
   };
 
   return (
+  
     <div className={styles.container}>
       <Segment clearing placeholder textAlign="center">
         <Container>

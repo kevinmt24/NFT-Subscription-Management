@@ -21,7 +21,7 @@ import {
   updateDoc,
   arrayUnion,
   getDoc,
-  setDoc
+  setDoc,
 } from "firebase/firestore";
 import app from "../../firebase.config";
 
@@ -39,6 +39,7 @@ const ArticleShow = () => {
   const [ethAddress, setEthAddress] = useState("No address");
   const [articleID, setArticleID] = useState("");
 
+  //Getting Document details from the selected article.
   useEffect(() => {
     getDocs(collection(db, "articles")).then((response) => {
       console.log("Reading...");
@@ -52,34 +53,33 @@ const ArticleShow = () => {
       );
     });
 
+//Verifying whether user has already used a token on particular article
     try {
       const docRef = doc(
         db,
         "users",
-        "0xcd3B766CCDd6AE721141F452C550Ca635964ce71"
+        "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
       );
       getDoc(docRef).then((docSnap) => {
-        if(docSnap.data()) {
-        for (let id in docSnap.data().articlesOwned) {
-          console.log(show + " : "+docSnap.data().articlesOwned[id]);
-          if (show === docSnap.data().articlesOwned[id]) {
-            console.log("Article is Found..")
-            setActive(false);
-          
-            
+        if (docSnap.data()) {
+          for (let id in docSnap.data().articlesOwned) {
+            console.log(show + " : " + docSnap.data().articlesOwned[id]);
+            if (show === docSnap.data().articlesOwned[id]) {
+              console.log("Article is Found..");
+              setActive(false);
+            }
           }
         }
-      }
       });
     } catch (e) {
       console.log("No articles bought so far!");
     }
   }, []);
-
+//UseAToken () burns a token to preview the article.
   const useAToken = async () => {
     try {
       const result = await contract.useAToken(
-        "0xcd3B766CCDd6AE721141F452C550Ca635964ce71"
+        "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
       );
       setIsHidden(false);
       console.log("TOKEN USED");
@@ -87,7 +87,7 @@ const ArticleShow = () => {
       const articlesRef = await doc(
         db,
         "users",
-        "0xcd3B766CCDd6AE721141F452C550Ca635964ce71"
+        "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
       );
       await updateDoc(articlesRef, {
         articlesOwned: arrayUnion(articleID),

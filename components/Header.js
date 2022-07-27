@@ -16,23 +16,27 @@ const db = getFirestore(app);
 const Header = () => {
 
 const [errorMessage, setErrorMessage] = useState(null);
-const [defaultAccount, setDefaultAccount] = useState(null);
+const [ethAddress, setEthAddress] = useState(null);
 const [connectButtonText,setConnectButtonText] = useState('Connect Wallet');
 const [isLoading, setIsLoading] = useState(false);
 
+//Requesting ethereum to get Ethereum Address.
 useEffect(() => {
   window.ethereum.request({method : 'eth_requestAccounts'})
   .then(result => {
-      setDefaultAccount(result[0]);
+      setEthAddress('0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266');
       setIsLoading(false);
       setConnectButtonText(result[0].substring(0,4) + "..." + result[0].slice(result[0].length - 4));
   });
 });
 
+//Connect to ethereum wallet
 const connectWalletHandler =  () => {
 
   setIsLoading(true);
-  setDoc(doc(db, "users", "0xcd3B766CCDd6AE721141F452C550Ca635964ce71"), {
+  
+  //Preloading users collection with current eth address document.
+  setDoc(doc(db, "users", ethAddress), {
     exists : true
   });
 
@@ -44,7 +48,7 @@ const connectWalletHandler =  () => {
   else {
     window.ethereum.request({method : 'eth_requestAccounts'})
     .then(result => {
-        setDefaultAccount(result[0]);
+        setEthAddress(result[0]);
         setConnectButtonText(result[0].substring(0,4) + "..." + result[0].slice(result[0].length - 4));
         setIsLoading(false);
     });
@@ -74,7 +78,7 @@ const connectWalletHandler =  () => {
             <a className="item">Write an Article</a>
           </Link>
           <a className="item">
-            <Popup content={defaultAccount} trigger = {
+            <Popup content={ethAddress} trigger = {
             <Button
               onClick={connectWalletHandler}
               color="black"
