@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import contract from "../../components/Medium";
-
 import {
   Container,
   Divider,
@@ -41,6 +40,10 @@ const ArticleShow = () => {
 
   //Getting Document details from the selected article.
   useEffect(() => {
+    window.ethereum.request({method : 'eth_requestAccounts'})
+    .then(result => {setEthAddress(result[0])});
+
+
     getDocs(collection(db, "articles")).then((response) => {
       console.log("Reading...");
       setArticleData(
@@ -58,7 +61,7 @@ const ArticleShow = () => {
       const docRef = doc(
         db,
         "users",
-        "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+        ethAddress
       );
       getDoc(docRef).then((docSnap) => {
         if (docSnap.data()) {
@@ -76,18 +79,18 @@ const ArticleShow = () => {
     }
   }, []);
 //UseAToken () burns a token to preview the article.
-  const useAToken = async () => {
+  const useToken = async () => {
+
     try {
-      const result = await contract.useAToken(
-        "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
-      );
+      const result = await contract.useAToken(ethAddress);
       setIsHidden(false);
-      console.log("TOKEN USED");
+      console.log(result);
+
       //Adding Owned Articles to the user list on Firestore
       const articlesRef = await doc(
         db,
         "users",
-        "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+        ethAddress
       );
       await updateDoc(articlesRef, {
         articlesOwned: arrayUnion(articleID),
@@ -133,7 +136,7 @@ const ArticleShow = () => {
                         animated="fade"
                         color="black"
                         className={styles.subbutton}
-                        onClick={useAToken}
+                        onClick={useToken}
                       >
                         <Button.Content visible>
                           Continue Reading

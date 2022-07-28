@@ -8,9 +8,9 @@ contract Medium is ERC1155 {
 
     uint256 public lastTimestamp;
     uint256 currentDateAsTokenID;
-    event getBalance(uint tokenBalance); //Pass token balance data to front end
-    mapping (address => uint256) tokenlimits; //Token limits of each user
-    mapping (address => uint256) tokenIds;  //Token Ids of each user
+    mapping(address => uint256) tokenBalance;
+    mapping (address => uint256) tokenlimits;
+    mapping (address => uint256) tokenIds;
 
     constructor() ERC1155("") {
         lastTimestamp = block.timestamp;
@@ -37,15 +37,17 @@ contract Medium is ERC1155 {
         _mint(account, currentDateAsTokenID, amount,"");
         tokenIds[account] = currentDateAsTokenID;
         tokenlimits[account] -= amount;
+        tokenBalance[account] = balanceOf(account,currentDateAsTokenID);
 
     }
+    
 
     //Check whether user has required token for present day.
-    function verifyUserHasToken(address account) 
-    public {
-         emit getBalance(balanceOf(account, block.timestamp/84600));
+    function getTokenBalance(address account) 
+    public view returns (uint) {
+         return tokenBalance[account];
     }
-    //Use required token to access an article
+
     function useAToken(address account) public  {
         require(balanceOf(account, block.timestamp/84600) > 0, "Not enough tokens to view the article.");
         _burn(account,block.timestamp/84600,1);

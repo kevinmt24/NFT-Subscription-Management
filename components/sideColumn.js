@@ -11,51 +11,48 @@ import {
 } from "semantic-ui-react";
 import styles from "../styles/sideColumn.module.css";
 
+
 const SideColumn = () => {
   const [tokenInput, setTokenInput] = useState("");
   const [token_amount, setTokenAmount] = useState("0");
   const [headerMessage, setHeaderMessage] = useState("");
   const [errorStatus, setErrorStatus] = useState(false);
   const [successStatus, setSuccessStatus] = useState(false);
+  const [ethAddress, setEthAddress] = useState('');
 
-//Fetching the amount of tokens the user already has.
+  //Fetching the amount of tokens the user already has.
   useEffect(() => {
-    async function fetchTokens() {
-      await contract
-      .verifyUserHasToken("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266")
-      .then(async (tx) => {
-          const receipt = await tx.wait()
-//Number of tokens recieved using EVENT-EMITTER in Solidity
-          for (const event of receipt.events) {
-            console.log(`Event ${event.event} with args ${event.args}`);
+    window.ethereum.request({method : 'eth_requestAccounts'})
+    .then(result => {setEthAddress(result[0])});
 
-            setTokenAmount(event.args.toString());
-          }
-      });
+    async function getBalance() {
+      const result = await contract.getTokenBalance(ethAddress);
+      setTokenAmount(result.toString());
     }
-    fetchTokens().catch(console.error)
-  },[]);
+    getBalance().catch(console.error);
+  }, []);
 
-//Mint function to mint tokens where tokenInput = number of tokens required to mint.
+  //Mint function to mint tokens where tokenInput = number of tokens required to mint.
   const mint = async () => {
-
     try {
-        const result = await contract.mint(
-          "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
-          tokenInput
-         );
-    
+      console.log('Statement #1');
+      const result = await contract.mint(ethAddress,tokenInput);
+      console.log('Statement #2');
+      const tokenresult = await contract.getTokenBalance(ethAddress);
+      console.log('Statement #3');
+
+      setTokenAmount(tokenresult.toString());
       setSuccessStatus(true);
       setHeaderMessage("Mint Successful !");
+
       setTimeout(function () {
         setHeaderMessage("");
         setSuccessStatus(false);
       }, 5000);
     } catch (e) {
-     
-    console.log(e.reason.substring(77));
+      console.log(e.reason.substring(77));
       setErrorStatus(true);
-      setHeaderMessage(e.reason.substring(77).toString());
+     setHeaderMessage(e.reason.substring(77).toString());
       setTimeout(function () {
         setHeaderMessage("");
         setErrorStatus(false);
@@ -64,7 +61,6 @@ const SideColumn = () => {
   };
 
   return (
-  
     <div className={styles.container}>
       <Segment clearing placeholder textAlign="center">
         <Container>

@@ -24,7 +24,7 @@ const [isLoading, setIsLoading] = useState(false);
 useEffect(() => {
   window.ethereum.request({method : 'eth_requestAccounts'})
   .then(result => {
-      setEthAddress('0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266');
+      setEthAddress(result[0]);
       setIsLoading(false);
       setConnectButtonText(result[0].substring(0,4) + "..." + result[0].slice(result[0].length - 4));
   });
