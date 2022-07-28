@@ -60,7 +60,7 @@ const connectWalletHandler =  () => {
   return (
     <div className={styles.HeaderMenu}>
       <Menu secondary>
-        <Link route = '/  '>
+        <Link route = '/'>
           <a>
         <Image
           style={{ marginTop: "4px" }}

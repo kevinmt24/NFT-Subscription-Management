@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import contract from "../../components/Medium";
+import Link from "next/link";
 import {
   Container,
   Divider,
@@ -40,9 +41,11 @@ const ArticleShow = () => {
 
   //Getting Document details from the selected article.
   useEffect(() => {
-    window.ethereum.request({method : 'eth_requestAccounts'})
-    .then(result => {setEthAddress(result[0])});
-
+    window.ethereum
+      .request({ method: "eth_requestAccounts" })
+      .then((result) => {
+        setEthAddress(result[0]);
+      });
 
     getDocs(collection(db, "articles")).then((response) => {
       console.log("Reading...");
@@ -56,13 +59,9 @@ const ArticleShow = () => {
       );
     });
 
-//Verifying whether user has already used a token on particular article
+    //Verifying whether user has already used a token on particular article
     try {
-      const docRef = doc(
-        db,
-        "users",
-        ethAddress
-      );
+      const docRef = doc(db, "users", ethAddress);
       getDoc(docRef).then((docSnap) => {
         if (docSnap.data()) {
           for (let id in docSnap.data().articlesOwned) {
@@ -78,20 +77,15 @@ const ArticleShow = () => {
       console.log("No articles bought so far!");
     }
   }, []);
-//UseAToken () burns a token to preview the article.
+  //UseAToken () burns a token to preview the article.
   const useToken = async () => {
-
     try {
       const result = await contract.useAToken(ethAddress);
       setIsHidden(false);
       console.log(result);
 
       //Adding Owned Articles to the user list on Firestore
-      const articlesRef = await doc(
-        db,
-        "users",
-        ethAddress
-      );
+      const articlesRef = await doc(db, "users", ethAddress);
       await updateDoc(articlesRef, {
         articlesOwned: arrayUnion(articleID),
       });
@@ -160,14 +154,18 @@ const ArticleShow = () => {
                       <p>You currently don't have the required token.</p>
                     </Message>
                     <div className={styles.footer2}>
-                      <a href="/" className={styles.footerText}>
+                      <Link href ='/'>
+                        <div className={styles.footerText}>
                         Don't have enough tokens? Mint them now !
-                      </a>
+                        </div>
+                      </Link>
                     </div>
                     <div className={styles.footer}>
-                      <a href="/" className={styles.footerText}>
-                        Get Back to Home Page
-                      </a>
+                      <Link href = '/'>
+                        <div className={styles.footerText}>
+                          Get Back to Home Page
+                        </div>
+                      </Link>
                     </div>
                   </Grid>
                 </div>

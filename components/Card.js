@@ -49,9 +49,10 @@ const Article = () => {
               <Divider />
             </Grid.Column>
             <Grid.Column width={4}>
-              <Image
+              <img
                 className={styles.cardImage}
                 src="https://via.placeholder.com/200x132.png"
+                alt="News article thumbnail"
               />
             </Grid.Column>
           </Grid>
