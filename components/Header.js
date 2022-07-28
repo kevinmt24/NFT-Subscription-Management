@@ -67,6 +67,7 @@ const connectWalletHandler =  () => {
           src="https://links.papareact.com/yvf"
           size="small"
           layout="fill"
+          alt = "Medium Logo"
         />
         </a>
         </Link>

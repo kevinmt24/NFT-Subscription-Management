@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import moment from "moment";
 
 import { Container, Menu, Image, Form, Message } from "semantic-ui-react";
@@ -62,6 +63,7 @@ const Writing = () => {
             src="https://links.papareact.com/yvf"
             size="small"
             layout="fill"
+            alt = "Medium Logo"
           />
         </Link>
       </Menu>

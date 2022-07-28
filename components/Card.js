@@ -32,7 +32,7 @@ const Article = () => {
     <div>
       {articleData.map((data) => {
         return (
-          <Grid>
+          <Grid key={data.id}>
             <Grid.Column width={11}>
               <div className={styles.artist}>{data.name}</div>
               <Link href={"/articles/" + data.id}>
@@ -49,7 +49,7 @@ const Article = () => {
               <Divider />
             </Grid.Column>
             <Grid.Column width={4}>
-              <img
+              <Image
                 className={styles.cardImage}
                 src="https://via.placeholder.com/200x132.png"
                 alt="News article thumbnail"
