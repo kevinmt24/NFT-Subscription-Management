@@ -104,7 +104,7 @@ const ArticleShow = () => {
       {articleData.map((data) => {
         if (data.id == show)
           return (
-            <Container>
+            <Container key={data.id}>
               <Header />
               <Divider />
               <Dimmer.Dimmable blurring={active} dimmed={active}>

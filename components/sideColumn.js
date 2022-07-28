@@ -48,9 +48,12 @@ const SideColumn = () => {
         setSuccessStatus(false);
       }, 5000);
     } catch (e) {
+     setHeaderMessage("Mint Unsuccessful!");
+     if(e) {
       console.log(e.reason.substring(77));
+      setHeaderMessage(e.reason.substring(77).toString());
+     }
       setErrorStatus(true);
-     setHeaderMessage(e.reason.substring(77).toString());
       setTimeout(function () {
         setHeaderMessage("");
         setErrorStatus(false);

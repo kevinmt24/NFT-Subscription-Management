@@ -56,14 +56,14 @@ const Writing = () => {
   return (
     <Container style={{ marginTop: "20px" }}>
       <Menu secondary>
-        <a href="/">
+        <Link href="/">
           <Image
             style={{ margin: "10px" }}
             src="https://links.papareact.com/yvf"
             size="small"
             layout="fill"
           />
-        </a>
+        </Link>
       </Menu>
 
       <Form success={formStatus} error={errorStatus} onSubmit={writeUserData}>
