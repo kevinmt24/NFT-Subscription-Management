@@ -151,12 +151,12 @@ const ArticleShow = () => {
                       <Message.Header>
                         Content cannot be accessed
                       </Message.Header>
-                      <p>You currently don't have the required token.</p>
+                      <p>You currently dont have the required token.</p>
                     </Message>
                     <div className={styles.footer2}>
                       <Link href ='/'>
                         <div className={styles.footerText}>
-                        Don't have enough tokens? Mint them now !
+                        Dont have enough tokens? Mint them now !
                         </div>
                       </Link>
                     </div>

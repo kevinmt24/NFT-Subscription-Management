@@ -17,12 +17,12 @@ const Header = () => {
 
 const [errorMessage, setErrorMessage] = useState(null);
 const [ethAddress, setEthAddress] = useState(null);
-const [connectButtonText,setConnectButtonText] = useState('Connect Wallet');
+const [connectButtonText,setConnectButtonText] = useState("Connect Wallet");
 const [isLoading, setIsLoading] = useState(false);
 
 //Requesting ethereum to get Ethereum Address.
 useEffect(() => {
-  window.ethereum.request({method : 'eth_requestAccounts'})
+  window.ethereum.request({method : "eth_requestAccounts"})
   .then(result => {
       setEthAddress(result[0]);
       setIsLoading(false);
@@ -46,7 +46,7 @@ const connectWalletHandler =  () => {
     
   }
   else {
-    window.ethereum.request({method : 'eth_requestAccounts'})
+    window.ethereum.request({method : "eth_requestAccounts"})
     .then(result => {
         setEthAddress(result[0]);
         setConnectButtonText(result[0].substring(0,4) + "..." + result[0].slice(result[0].length - 4));

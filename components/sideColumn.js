@@ -18,11 +18,11 @@ const SideColumn = () => {
   const [headerMessage, setHeaderMessage] = useState("");
   const [errorStatus, setErrorStatus] = useState(false);
   const [successStatus, setSuccessStatus] = useState(false);
-  const [ethAddress, setEthAddress] = useState('');
+  const [ethAddress, setEthAddress] = useState("");
 
   //Fetching the amount of tokens the user already has.
   useEffect(() => {
-    window.ethereum.request({method : 'eth_requestAccounts'})
+    window.ethereum.request({method : "eth_requestAccounts"})
     .then(result => {setEthAddress(result[0])});
 
     async function getBalance() {
@@ -35,11 +35,9 @@ const SideColumn = () => {
   //Mint function to mint tokens where tokenInput = number of tokens required to mint.
   const mint = async () => {
     try {
-      console.log('Statement #1');
+
       const result = await contract.mint(ethAddress,tokenInput);
-      console.log('Statement #2');
       const tokenresult = await contract.getTokenBalance(ethAddress);
-      console.log('Statement #3');
 
       setTokenAmount(tokenresult.toString());
       setSuccessStatus(true);
