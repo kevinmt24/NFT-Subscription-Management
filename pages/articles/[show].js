@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
-import contract from "../../components/Medium";
+import contract from "../../components/Medium.js";
 import Link from "next/link";
 import {
   Container,
