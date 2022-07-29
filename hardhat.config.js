@@ -13,7 +13,10 @@ module.exports = {
   networks : {
     rinkeby: {
       url: endpoint,
-      accounts: [`0x${privateKey}`]
+      accounts: [`0x${privateKey}`],
+      gas: 2100000,
+      gasPrice: 8000000000,
+      saveDeployments: true,
     }
   },
   etherscan: {

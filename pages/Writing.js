@@ -17,9 +17,12 @@ const Writing = () => {
   const router = useRouter();
  
   //Users having metamask account can only publish article.
-  window.ethereum.request({ method: "eth_requestAccounts" }).then((result) => {
-    setEthAddress(result[0]);
+  useEffect(() => {
+    window.ethereum.request({ method: "eth_requestAccounts" }).then((result) => {
+      setEthAddress(result[0]);
+    });
   });
+ 
 
   const [formData, setFormData] = useState({
     name: "",
