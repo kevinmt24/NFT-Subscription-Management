@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import contract from "./Medium";
+import contract from "./Medium.js";
+const { ethers } = require("ethers");
 import {
   Button,
   Divider,
@@ -10,7 +11,7 @@ import {
   Container,
 } from "semantic-ui-react";
 import styles from "../styles/sideColumn.module.css";
-
+import { Loading } from "web3uikit";
 
 const SideColumn = () => {
   const [tokenInput, setTokenInput] = useState("");
@@ -19,26 +20,34 @@ const SideColumn = () => {
   const [errorStatus, setErrorStatus] = useState(false);
   const [successStatus, setSuccessStatus] = useState(false);
   const [ethAddress, setEthAddress] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   //Fetching the amount of tokens the user already has.
   useEffect(() => {
-    window.ethereum.request({method : "eth_requestAccounts"})
-    .then(result => {setEthAddress(result[0])});
+    window.ethereum
+      .request({ method: "eth_requestAccounts" })
+      .then((result) => {
+        setEthAddress(result[0]);
+      });
 
     async function getBalance() {
       const result = await contract.getTokenBalance(ethAddress);
       setTokenAmount(result.toString());
     }
     getBalance().catch(console.error);
-  }, []);
+  }, [ethAddress]);
 
   //Mint function to mint tokens where tokenInput = number of tokens required to mint.
-  const mint = async () => {
+  const mintToken = async () => {
     try {
-
-      const result = await contract.mint(ethAddress,tokenInput);
+      //MINT FUNCTION
+      setIsLoading(true);
+      const result = await contract.mint(ethAddress, tokenInput);
+      await result.wait();
+      console.log(result);
+      setIsLoading(false);
+      //GETTING BALANCE FUNCTION
       const tokenresult = await contract.getTokenBalance(ethAddress);
-
       setTokenAmount(tokenresult.toString());
       setSuccessStatus(true);
       setHeaderMessage("Mint Successful !");
@@ -48,12 +57,10 @@ const SideColumn = () => {
         setSuccessStatus(false);
       }, 5000);
     } catch (e) {
-     setHeaderMessage("Mint Unsuccessful!");
-     if(e) {
-      console.log(e.reason.substring(77));
-      setHeaderMessage(e.reason.substring(77).toString());
-     }
+      setIsLoading(false);
+      setHeaderMessage("Mint Unsuccessful!"); 
       setErrorStatus(true);
+
       setTimeout(function () {
         setHeaderMessage("");
         setErrorStatus(false);
@@ -67,7 +74,7 @@ const SideColumn = () => {
         <Container>
           <h2 className={styles.mintHeader}>Mint Tokens Now!</h2>
           <div style={{ paddingLeft: "40px", paddingTop: "20px" }}>
-            <Form onSubmit={mint}>
+            <Form loading={isLoading} onSubmit={mintToken}>
               <Form.Group>
                 <Form.Field
                   id="form-input-control-first-name"

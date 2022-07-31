@@ -3,8 +3,8 @@ require('@nomiclabs/hardhat-ethers');
 require("@nomiclabs/hardhat-etherscan");
 require("dotenv").config();
 
-const privateKey = process.env.SIGNER_PRIVATE_KEY;
-const endpoint = process.env.INFURA_PROJECT_ID;
+const privateKey = process.env.NEXT_PUBLIC_SIGNER_PRIVATE_KEY;
+const endpoint = process.env.NEXT_PUBLIC_INFURA_PROJECT_ID;
 const etherscanApiKey = process.env.ETHERSCAN_API_KEY;
 
 /** @type import('hardhat/config').HardhatUserConfig */

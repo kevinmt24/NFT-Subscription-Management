@@ -8,7 +8,6 @@ contract Medium is ERC1155 {
 
     uint256 public lastTimestamp;
     uint256 currentDateAsTokenID;
-    mapping(address => uint256) tokenBalance;
     mapping (address => uint256) tokenlimits;
     mapping (address => uint256) tokenIds;
 
@@ -37,7 +36,6 @@ contract Medium is ERC1155 {
         _mint(account, currentDateAsTokenID, amount,"");
         tokenIds[account] = currentDateAsTokenID;
         tokenlimits[account] -= amount;
-        tokenBalance[account] = balanceOf(account,currentDateAsTokenID);
 
     }
     
@@ -45,7 +43,7 @@ contract Medium is ERC1155 {
     //Check whether user has required token for present day.
     function getTokenBalance(address account) 
     public view returns (uint) {
-         return tokenBalance[account];
+         return balanceOf(account,block.timestamp/84600);
     }
 
     function useAToken(address account) public  {

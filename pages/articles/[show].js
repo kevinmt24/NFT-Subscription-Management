@@ -58,17 +58,17 @@ const ArticleShow = () => {
         })
       );
     });
-
+  
     //Verifying whether user has already used a token on particular article
     try {
       const docRef = doc(db, "users", ethAddress);
-      getDoc(docRef).then((docSnap) => {
+      getDoc(docRef).then(async (docSnap) => {
         if (docSnap.data()) {
           for (let id in docSnap.data().articlesOwned) {
             console.log(show + " : " + docSnap.data().articlesOwned[id]);
             if (show === docSnap.data().articlesOwned[id]) {
               console.log("Article is Found..");
-              setActive(false);
+              await setActive(false);
             }
           }
         }
@@ -76,11 +76,13 @@ const ArticleShow = () => {
     } catch (e) {
       console.log("No articles bought so far!");
     }
+
   }, []);
   //UseAToken () burns a token to preview the article.
   const useToken = async () => {
+    const result = await contract.useAToken(ethAddress);
     try {
-      const result = await contract.useAToken(ethAddress);
+      
       setIsHidden(false);
       console.log(result);
 
