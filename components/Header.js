@@ -22,38 +22,48 @@ const [isLoading, setIsLoading] = useState(false);
 
 //Requesting ethereum to get Ethereum Address.
 useEffect(() => {
-  window.ethereum.request({method : "eth_requestAccounts"})
-  .then(result => {
-      setEthAddress(result[0]);
-      setIsLoading(false);
-      setConnectButtonText(result[0].substring(0,4) + "..." + result[0].slice(result[0].length - 4));
-  });
+  const connectEth = async () => {
+    await window.ethereum.request({method : "eth_requestAccounts"})
+    .then(result => {
+        setEthAddress(result[0]);
+        setIsLoading(false);
+        setConnectButtonText(result[0].substring(0,4) + "..." + result[0].slice(result[0].length - 4));
+    });
+  }
+
+  connectEth().catch(console.error);
+  const createDoc = async () => {
+    await setDoc(doc(db, "users", ethAddress), {
+      exists : true
+    },{merge : true});
+  }
+  createDoc().catch(console.error)
 });
 
+
+
 //Connect to ethereum wallet
-const connectWalletHandler =  () => {
+const connectWalletHandler = async () => {
 
   setIsLoading(true);
-  
-  //Preloading users collection with current eth address document.
-  setDoc(doc(db, "users", ethAddress), {
-    exists : true
-  });
-
   if (!window.ethereum) {
     setErrorMessage("MetaMask not detected. Please try again from a MetaMask enabled browser.");
     setIsLoading(false);
     
   }
   else {
-    window.ethereum.request({method : "eth_requestAccounts"})
+    await window.ethereum.request({method : "eth_requestAccounts"})
     .then(result => {
         setEthAddress(result[0]);
         setConnectButtonText(result[0].substring(0,4) + "..." + result[0].slice(result[0].length - 4));
         setIsLoading(false);
     });
   }
-  
+
+  //Preloading users collection with current eth address document.
+  setDoc(doc(db, "users", ethAddress), {
+    exists : true
+  });
 };
 
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import contract from "../../components/Medium.js";
 import Link from "next/link";
+
 import {
   Container,
   Divider,
@@ -41,6 +42,7 @@ const ArticleShow = () => {
 
   //Getting Document details from the selected article.
   useEffect(() => {
+  
     window.ethereum
       .request({ method: "eth_requestAccounts" })
       .then((result) => {
@@ -58,33 +60,35 @@ const ArticleShow = () => {
         })
       );
     });
-  
+  }, []);
+
+  const verify = async() => {
     //Verifying whether user has already used a token on particular article
-    try {
       const docRef = doc(db, "users", ethAddress);
-      getDoc(docRef).then(async (docSnap) => {
-        if (docSnap.data()) {
-          for (let id in docSnap.data().articlesOwned) {
+       getDoc(docRef).then(async (docSnap) => {
+         if (docSnap.data()) {
+          for (let id in  docSnap.data().articlesOwned) {
             console.log(show + " : " + docSnap.data().articlesOwned[id]);
-            if (show === docSnap.data().articlesOwned[id]) {
+            if (show ===  docSnap.data().articlesOwned[id]) {
               console.log("Article is Found..");
-              await setActive(false);
+               setActive(false);
+              
             }
           }
         }
       });
-    } catch (e) {
-      console.log("No articles bought so far!");
     }
 
-  }, []);
+
+  verify().catch(console.error);
+
   //UseAToken () burns a token to preview the article.
   const useToken = async () => {
-    const result = await contract.useAToken(ethAddress);
+   const result = await contract.useAToken(ethAddress);
     try {
       
       setIsHidden(false);
-      console.log(result);
+      //console.log(result);
 
       //Adding Owned Articles to the user list on Firestore
       const articlesRef = await doc(db, "users", ethAddress);
