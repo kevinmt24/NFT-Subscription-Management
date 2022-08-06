@@ -18,7 +18,7 @@ contract Medium is ERC1155 {
     function mint(address account, uint256 amount )
         public
     {
-        currentDateAsTokenID = block.timestamp/84600;
+        currentDateAsTokenID = block.timestamp/86400;
 
        //Setting token Limit to a new user to 10
         if(tokenlimits[account] == 0 && tokenIds[account] == 0)
@@ -43,12 +43,12 @@ contract Medium is ERC1155 {
     //Check whether user has required token for present day.
     function getTokenBalance(address account) 
     public view returns (uint) {
-         return balanceOf(account,block.timestamp/84600);
+         return balanceOf(account,block.timestamp/86400);
     }
 
     function useAToken(address account) public  {
-        require(balanceOf(account, block.timestamp/84600) > 0, "Not enough tokens to view the article.");
-        _burn(account,block.timestamp/84600,1);
+        require(balanceOf(account, block.timestamp/86400) > 0, "Not enough tokens to view the article.");
+        _burn(account,block.timestamp/86400,1);
     }
 
 }

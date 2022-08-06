@@ -39,10 +39,11 @@ const SideColumn = () => {
 
   //Mint function to mint tokens where tokenInput = number of tokens required to mint.
   const mintToken = async () => {
+   
     try {
       //MINT FUNCTION
       setIsLoading(true);
-      const result = await contract.mint(ethAddress, tokenInput);
+      const result = await contract.mint(ethAddress, parseInt(tokenInput), {gasLimit: 100000});
       await result.wait();
       console.log(result);
       setIsLoading(false);
@@ -57,6 +58,7 @@ const SideColumn = () => {
         setSuccessStatus(false);
       }, 5000);
     } catch (e) {
+      console.error();
       setIsLoading(false);
       setHeaderMessage("Mint Unsuccessful!"); 
       setErrorStatus(true);
