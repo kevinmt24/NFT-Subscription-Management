@@ -1,14 +1,10 @@
 const { ethers } = require("ethers");
-
-const endpoint = process.env.NEXT_PUBLIC_INFURA_PROJECT_ID;
-
-const provider = new ethers.providers.JsonRpcProvider(endpoint);
-const CONTRACT_ADDRESS = '0xD1bbe8BB41816355C0164E0b201CA95b6b29Ded1'
-
 const { abi } = require("../contracts/Medium.json");
-const signer = new ethers.Wallet(process.env.NEXT_PUBLIC_SIGNER_PRIVATE_KEY,provider);
 
+const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
 
-const contract = new ethers.Contract(CONTRACT_ADDRESS, abi, signer);
-
-export default contract;
+// Transactions are signed by the visitor's own wallet (MetaMask), so no private key lives in the app.
+export default function getContract() {
+  const signer = new ethers.providers.Web3Provider(window.ethereum).getSigner();
+  return new ethers.Contract(CONTRACT_ADDRESS, abi, signer);
+}

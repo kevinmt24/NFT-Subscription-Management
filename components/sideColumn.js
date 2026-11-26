@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import contract from "./Medium.js";
+import getContract from "./Medium.js";
 const { ethers } = require("ethers");
 import {
   Button,
@@ -31,7 +31,8 @@ const SideColumn = () => {
       });
 
     async function getBalance() {
-      const result = await contract.getTokenBalance(ethAddress);
+      if (!ethAddress) return;
+      const result = await getContract().getTokenBalance(ethAddress);
       setTokenAmount(result.toString());
     }
     getBalance().catch(console.error);
@@ -43,12 +44,12 @@ const SideColumn = () => {
     try {
       //MINT FUNCTION
       setIsLoading(true);
-      const result = await contract.mint(ethAddress, parseInt(tokenInput), {gasLimit: 100000});
+      const result = await getContract().mint(parseInt(tokenInput));
       await result.wait();
       console.log(result);
       setIsLoading(false);
       //GETTING BALANCE FUNCTION
-      const tokenresult = await contract.getTokenBalance(ethAddress);
+      const tokenresult = await getContract().getTokenBalance(ethAddress);
       setTokenAmount(tokenresult.toString());
       setSuccessStatus(true);
       setHeaderMessage("Mint Successful !");

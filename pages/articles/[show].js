@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
-import contract from "../../components/Medium.js";
+import getContract from "../../components/Medium.js";
 import Link from "next/link";
 
 import {
@@ -84,8 +84,9 @@ const ArticleShow = () => {
 
   //UseAToken () burns a token to preview the article.
   const useToken = async () => {
-   const result = await contract.useAToken(ethAddress);
     try {
+      const tx = await getContract().useAToken();
+      await tx.wait();
       
       setIsHidden(false);
       //console.log(result);
